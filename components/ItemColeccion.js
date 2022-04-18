@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
-const ItemColeccion = ({ elemento, filtro }) => {
+const ItemColeccion = ({ elemento, filtro, modal, setModal, setElemento }) => {
+  const handleModal = (item) => {
+    setModal(!modal);
+    setElemento(item);
+  };
+
   return Object.keys(filtro).length === 0
     ? elemento.item.map((item) => (
         <div
@@ -22,8 +28,9 @@ const ItemColeccion = ({ elemento, filtro }) => {
           <Link href={"/coleccion"} passHref>
             <input
               type="button"
-              value="Ver más"
+              value="Agregar al carrito"
               className="text-center uppercase border-2 border-[#43589F] rounded-md w-10/12 py-3 my-3 mx-auto hover:bg-[#43589F] hover:text-white transition-colors cursor-pointer font-bold text-[#43589F]"
+              onClick={() => handleModal(item)}
             />
           </Link>
         </div>
@@ -52,6 +59,7 @@ const ItemColeccion = ({ elemento, filtro }) => {
                   type="button"
                   value="Ver más"
                   className="text-center uppercase border-2 border-[#43589F] rounded-md w-10/12 py-3 my-3 mx-auto hover:bg-[#43589F] hover:text-white transition-colors cursor-pointer font-bold text-[#43589F]"
+                  onClick={() => handleModal(item)}
                 />
               </Link>
             </div>

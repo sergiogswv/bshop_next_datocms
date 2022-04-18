@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { request } from "../lib/datocms";
 import ItemColeccion from "../components/ItemColeccion";
+import Modal from "../components/Modal";
 
-const Coleccion = ({ elementos }) => {
+const Coleccion = ({ elementos, galeria }) => {
   const [mostrar, setMostrar] = useState(false);
   const [elementosConsulta, setElementosConsulta] = useState({});
   const [filtro, setFiltro] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [elemento, setElemento] = useState({});
 
   useEffect(() => {
     setElementosConsulta(elementos.allColeccionfulls);
@@ -103,9 +106,20 @@ const Coleccion = ({ elementos }) => {
                   key={elemento.id}
                   elemento={elemento}
                   filtro={filtro}
+                  modal={modal}
+                  setModal={setModal}
+                  setElemento={setElemento}
                 />
               ))}
           </div>
+
+          {modal && (
+            <Modal
+              elemento={elemento}
+              setModal={setModal}
+              galeria={galeria}
+            ></Modal>
+          )}
         </div>
       </main>
     </>
@@ -130,15 +144,33 @@ export async function getServerSideProps() {
           }
           slug
           titulo
+          categoria
         }
       }
     }
     `,
   });
 
+  const galeria = await request({
+    query: `query{
+      allGaleries{
+        categoria
+        id
+        imagen{
+          id
+          galery{
+            id
+            url
+          }
+        }
+      }
+    }`,
+  });
+
   return {
     props: {
       elementos,
+      galeria,
     },
   };
 }

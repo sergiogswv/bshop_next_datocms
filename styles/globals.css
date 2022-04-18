@@ -16,6 +16,10 @@
   .borderBase {
     border: 1px solid #43589f;
   }
+  .borderBaseBottom {
+    border-bottom: 1px solid #43589f;
+  }
+
   .bgBase-hover {
     background-color: #43589f;
   }
